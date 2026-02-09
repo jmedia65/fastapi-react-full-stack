@@ -50,7 +50,13 @@ app = FastAPI()
 # - allow_credentials=True is needed if you use cookies/auth headers
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite's default dev server port
+    # ALLOWED ORIGINS: Which websites/apps can call this API from a browser
+    # Add your ngrok URL here when testing with mobile:
+    #   "https://your-ngrok-url.ngrok-free.app"
+    allow_origins=[
+        "http://localhost:5173",  # Vite dev server (React frontend)
+        "http://localhost:8081",  # Expo web (if you run expo start --web)
+    ],
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allow all headers (Content-Type, Authorization, etc.)
 )

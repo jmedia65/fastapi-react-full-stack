@@ -1,36 +1,42 @@
-# FastAPI + React: Full-Stack CRUD from Zero to Production
+# FastAPI + React + React Native: Full-Stack CRUD from Zero to Production
 
-A hands-on tutorial that teaches you the **production-grade patterns** of building a full-stack web application with FastAPI (Python) and React (TypeScript). Every file is heavily commented to explain not just _what_ the code does, but _why_ it's done that way.
+A hands-on tutorial that teaches you the **production-grade patterns** of building full-stack applications with FastAPI (Python), React (TypeScript), and React Native (Expo). Every file is heavily commented to explain not just _what_ the code does, but _why_ it's done that way.
+
+**One API, Multiple Clients** — the same backend powers both web and mobile apps.
 
 ## What You'll Learn
 
 - **Backend**: Build a REST API with FastAPI, Pydantic validation, and proper error handling
-- **Frontend**: Create a React app with TypeScript, controlled components, and API integration
-- **Full-Stack Patterns**: Connect frontend to backend with CORS, environment variables, and type safety on both ends
+- **Web Frontend**: Create a React app with TypeScript, controlled components, and API integration
+- **Mobile App**: Build a React Native app with Expo that consumes the same API
+- **Full-Stack Patterns**: Connect frontend to backend with CORS, environment variables, and type safety
 - **Production Practices**: Error handling, loading states, separation of concerns, and clean architecture
-- **CRUD Operations**: Implement Create, Read, Update, Delete — the foundation of most web apps
+- **CRUD Operations**: Implement Create, Read, Update, Delete — the foundation of most apps
 
 ## Tech Stack
 
-| Layer           | Technology                                                                  | Purpose                                                 |
-| --------------- | --------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Backend         | [FastAPI](https://fastapi.tiangolo.com/)                                    | Modern Python web framework with automatic OpenAPI docs |
-| Validation      | [Pydantic](https://docs.pydantic.dev/)                                      | Data validation and serialization                       |
-| Frontend        | [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) | Type-safe UI components                                 |
-| Styling         | [React-Bootstrap](https://react-bootstrap.github.io/)                       | Pre-built Bootstrap 5 components                        |
-| Build Tool      | [Vite](https://vitejs.dev/)                                                 | Fast frontend development server                        |
-| Package Manager | [uv](https://docs.astral.sh/uv/) (Python) / npm (Node)                      | Dependency management                                   |
+| Layer             | Technology                                                                  | Purpose                                                 |
+| ----------------- | --------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Backend           | [FastAPI](https://fastapi.tiangolo.com/)                                    | Modern Python web framework with automatic OpenAPI docs |
+| Validation        | [Pydantic](https://docs.pydantic.dev/)                                      | Data validation and serialization                       |
+| Web Frontend      | [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) | Type-safe UI components                                 |
+| Web Styling       | [React-Bootstrap](https://react-bootstrap.github.io/)                       | Pre-built Bootstrap 5 components                        |
+| Web Build Tool    | [Vite](https://vitejs.dev/)                                                 | Fast frontend development server                        |
+| Mobile App        | [Expo](https://expo.dev/) + [React Native](https://reactnative.dev/)        | Cross-platform mobile development                       |
+| Mobile Navigation | [Expo Router](https://docs.expo.dev/router/introduction/)                   | File-based routing for React Native                     |
+| Package Manager   | [uv](https://docs.astral.sh/uv/) (Python) / npm (Node)                      | Dependency management                                   |
 
 ## Prerequisites
 
 Before you start, make sure you have these installed:
 
-| Tool    | Version | Installation                                                                 |
-| ------- | ------- | ---------------------------------------------------------------------------- |
-| Python  | 3.11+   | [python.org](https://www.python.org/downloads/)                              |
-| uv      | Latest  | [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
-| Node.js | 18+     | [nodejs.org](https://nodejs.org/)                                            |
-| npm     | 9+      | Comes with Node.js                                                           |
+| Tool    | Version | Installation                                                                                                                                             |
+| ------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Python  | 3.11+   | [python.org](https://www.python.org/downloads/)                                                                                                          |
+| uv      | Latest  | [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/)                                                                             |
+| Node.js | 18+     | [nodejs.org](https://nodejs.org/)                                                                                                                        |
+| npm     | 9+      | Comes with Node.js                                                                                                                                       |
+| Expo Go | Latest  | [App Store](https://apps.apple.com/app/expo-go/id982107779) / [Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent) (for mobile) |
 
 ## Quick Start
 
@@ -52,21 +58,55 @@ uv run fastapi dev main.py   # Start FastAPI dev server
 The API will be running at **http://localhost:8000**  
 Interactive docs at **http://localhost:8000/docs**
 
-### 3. Start the frontend (new terminal)
+### 3. Start the web frontend (new terminal)
 
 ```bash
 cd frontend
+cp .env.example .env         # Create environment file
 npm install                  # Install Node dependencies
 npm run dev                  # Start Vite dev server
 ```
 
-The app will be running at **http://localhost:5173**
+The web app will be running at **http://localhost:5173**
 
-### 4. Try it out!
+### 4. Start the mobile app (optional, new terminal)
 
-1. Open **http://localhost:5173** in your browser
-2. Create a user using the form
-3. Edit and delete users
+Mobile devices can't access `localhost` — you need a tunnel or local IP.
+
+**Option A: Using ngrok (works anywhere)**
+
+```bash
+# Terminal 1: Start ngrok tunnel
+ngrok http 8000
+# Copy the https URL (e.g., https://abc123.ngrok-free.app)
+```
+
+```bash
+# Terminal 2: Start mobile app
+cd mobile
+cp .env.example .env
+# Edit .env and set EXPO_PUBLIC_API_BASE_URL to your ngrok URL
+npm install
+npx expo start
+```
+
+**Option B: Using local IP (same WiFi only)**
+
+```bash
+cd mobile
+cp .env.example .env
+# Edit .env and set EXPO_PUBLIC_API_BASE_URL=http://YOUR_LOCAL_IP:8000
+npm install
+npx expo start
+```
+
+Scan the QR code with Expo Go app on your phone.
+
+### 5. Try it out!
+
+1. Open **http://localhost:5173** in your browser (web)
+2. Scan QR code with Expo Go (mobile)
+3. Create a user — it appears on BOTH web and mobile!
 4. Check **http://localhost:8000/docs** to see the API documentation
 
 ## Project Structure
@@ -80,7 +120,7 @@ learn-fastapi-react/
 │   └── routers/
 │       └── users.py            # CRUD endpoints
 │
-├── frontend/                   # React frontend
+├── frontend/                   # React web frontend
 │   ├── src/
 │   │   ├── main.tsx            # React entry point
 │   │   ├── App.tsx             # Main component (state + logic)
@@ -90,7 +130,22 @@ learn-fastapi-react/
 │   │   └── components/
 │   │       ├── UserForm.tsx    # Form component
 │   │       └── UserList.tsx    # List component
-│   └── .env                    # Environment variables
+│   ├── .env.example            # Environment template
+│   └── .env                    # Your local config (git-ignored)
+│
+├── mobile/                     # React Native mobile app (Expo)
+│   ├── app/
+│   │   ├── _layout.tsx         # Root layout (navigation)
+│   │   └── index.tsx           # Home screen (state + logic)
+│   ├── src/
+│   │   ├── types.ts            # TypeScript interfaces (same as web!)
+│   │   ├── api/
+│   │   │   └── users.ts        # API client (same pattern as web!)
+│   │   └── components/
+│   │       ├── UserForm.tsx    # Native form component
+│   │       └── UserList.tsx    # Native list component
+│   ├── .env.example            # Environment template
+│   └── .env                    # Your local config (git-ignored)
 │
 └── README.md                   # You are here!
 ```
@@ -121,7 +176,7 @@ This isn't a "copy-paste and hope it works" tutorial. It's designed for you to *
 3. `backend/routers/users.py` — CRUD endpoints
 4. `backend/main.py` — App setup & CORS
 
-### Frontend (understand how React consumes the API)
+### Web Frontend (understand how React consumes the API)
 
 1. `frontend/src/types.ts` — TypeScript interfaces (mirrors backend models)
 2. `frontend/src/api/users.ts` — API client (calls backend)
@@ -130,18 +185,31 @@ This isn't a "copy-paste and hope it works" tutorial. It's designed for you to *
 5. `frontend/src/components/UserForm.tsx` — Form component
 6. `frontend/src/components/UserList.tsx` — List component
 
+### Mobile App (see how the same patterns apply to React Native)
+
+1. `mobile/src/types.ts` — Same interfaces as web!
+2. `mobile/src/api/users.ts` — Same API client pattern
+3. `mobile/app/_layout.tsx` — Expo Router layout (like React Router)
+4. `mobile/app/index.tsx` — Main screen (compare to frontend/src/App.tsx)
+5. `mobile/src/components/UserForm.tsx` — Native form (TextInput vs input)
+6. `mobile/src/components/UserList.tsx` — Native list (View + map vs ul/li)
+
 ## Key Patterns Covered in Comments
 
-| Pattern                    | Where                                |
-| -------------------------- | ------------------------------------ |
-| Pydantic validation        | backend/models.py                    |
-| REST CRUD endpoints        | backend/routers/users.py             |
-| CORS configuration         | backend/main.py                      |
-| API client layer           | frontend/src/api/users.ts            |
-| Controlled components      | frontend/src/components/UserForm.tsx |
-| List rendering with keys   | frontend/src/components/UserList.tsx |
-| Smart/dumb component split | App.tsx vs components/               |
-| try/catch/finally          | frontend/src/App.tsx                 |
+| Pattern                        | Where                                                |
+| ------------------------------ | ---------------------------------------------------- |
+| Pydantic validation            | backend/models.py                                    |
+| REST CRUD endpoints            | backend/routers/users.py                             |
+| CORS configuration             | backend/main.py                                      |
+| API client layer               | frontend/src/api/users.ts, mobile/src/api/users.ts   |
+| Controlled components          | frontend/src/components/UserForm.tsx                 |
+| List rendering with keys       | frontend/src/components/UserList.tsx                 |
+| Smart/dumb component split     | App.tsx vs components/                               |
+| try/catch/finally              | frontend/src/App.tsx, mobile/app/index.tsx           |
+| React Native primitives        | mobile/src/components/\*.tsx (View, Text, TextInput) |
+| StyleSheet.create()            | mobile/src/components/\*.tsx                         |
+| Expo Router file-based routing | mobile/app/\_layout.tsx, mobile/app/index.tsx        |
+| Environment variables          | .env files (VITE* prefix vs EXPO_PUBLIC* prefix)     |
 
 ## What Makes This Production-Grade?
 
