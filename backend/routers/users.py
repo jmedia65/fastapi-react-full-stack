@@ -95,6 +95,10 @@ def get_user(user_id: int):
 #   422 Unprocessable Entity - Validation failed (bad email, missing fields)
 @router.post("/", response_model=User, status_code=201)
 def create_user(user: UserCreate):
+    print("=" * 50)
+    print("5. BACKEND: create_user() endpoint hit")
+    print(f"   Received data: {user}")
+    print(f"   Will assign ID: {db.user_id_counter}")
     # Access the global counter to assign new ID
     # In SQL: INSERT INTO users (name, email) VALUES (...) RETURNING id
     global user_id_counter  # Needed to modify module-level variable
@@ -103,14 +107,18 @@ def create_user(user: UserCreate):
     # user.dict() converts Pydantic model to dictionary
     # ** unpacks: {"name": "John", "email": "john@example.com"}
     new_user = {"id": db.user_id_counter, **user.model_dump()}
+    print(f"6. BACKEND: Created user dict: {new_user}")
 
     # Store in "database"
     db.users_db[db.user_id_counter] = new_user
+    print(f"7. BACKEND: Stored in database. DB now has {len(db.users_db)} user(s)")
 
     # Increment for next user
     db.user_id_counter += 1
 
     # Return created user (with ID) - frontend uses this to update UI
+    print(f"8. BACKEND: Returning new_user to frontend")
+    print("=" * 50)
     return new_user
 
 

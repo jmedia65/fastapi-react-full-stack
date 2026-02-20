@@ -80,7 +80,13 @@ function UserForm({
     // FORM ELEMENT
     // onSubmit is called when form is submitted (Enter key or button click)
     // The handler (handleCreate or handleUpdate) is passed from App.tsx
-    <Form onSubmit={onSubmit}>
+    // <Form onSubmit={onSubmit}>
+    <Form
+      onSubmit={(e) => {
+        console.log("1. UserForm: Form submitted");
+        onSubmit(e);
+      }}
+    >
       {/* NAME INPUT GROUP
           Form.Group adds proper spacing (mb-3 = margin-bottom: 1rem)
           Form.Label is associated with input for accessibility

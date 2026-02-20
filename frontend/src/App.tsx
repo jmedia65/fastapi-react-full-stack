@@ -147,10 +147,14 @@ function App() {
    */
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault(); // Stop browser from reloading the page on form submit
+    console.log("2. App.tsx handleCreate: Received submit event.");
+    console.log("Form data:", formData);
     try {
       setLoading(true);
       setError(null);
+      console.log("3. App.tsx: About to call userApi.createUser()");
       await userApi.createUser(formData); // Send POST request
+      console.log("10. App.tsx: API call successful, resetting form");
       setFormData({ name: "", email: "" }); // Reset form after success
       await loadUsers(); // Refresh the user list
     } catch (err) {

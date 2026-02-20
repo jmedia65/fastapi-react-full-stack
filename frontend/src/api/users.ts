@@ -108,6 +108,8 @@ export const getUser = async (id: number): Promise<User> => {
  * 5. App.tsx calls loadUsers() to refresh the list
  */
 export const createUser = async (user: UserCreate): Promise<User> => {
+  console.log("4. api/users.ts createUser: Making fetch request", user);
+  console.log("Steps 5 to 8 happen in the backend");
   const res = await fetch(API_BASE, {
     method: "POST", // Default is GET; must specify for create
     headers: {
@@ -119,12 +121,15 @@ export const createUser = async (user: UserCreate): Promise<User> => {
     // { name: "John", email: "john@example.com" } → '{"name":"John","email":"john@example.com"}'
     body: JSON.stringify(user),
   });
+  const data = await res.json();
+  console.log("9. api/users.ts createUser: Response received", data);
 
   // Backend returns 201 Created on success, 422 on validation failure
   if (!res.ok) throw new Error("Failed to create user");
 
   // Backend returns the created user WITH the new id
-  return res.json();
+  // return res.json();
+  return data;
 };
 
 /**
